@@ -1,0 +1,41 @@
+## Filename: gcp-log-bucket-analytics.yaml
+#
+#apiVersion: logging.gcp.upbound.io/v1beta1 # Use the logging API group
+#kind: LogBucket
+#metadata:
+#  name: zia-bi-analytics-logs # Name of the Kubernetes resource
+#  annotations:
+#    # Optional: Add descriptions or links
+#    crossplane.io/external-name: zia_bi__analytics_log_bucket # Can specify the exact GCP name, otherwise derived
+#    description: "Log bucket for my-app with Log Analytics enabled"
+#spec:
+#  forProvider:
+#    # --- Required Parameters ---
+#
+#    # location: The location for the bucket (e.g., "us-west1", "europe-west1", "global").
+#    # If linked to BigQuery, must be in the same location as the BigQuery dataset.
+#    location: us-west1 # Choose the appropriate region or "global"
+#
+#    # Specifying bucketId explicitly here is clearer for Log Buckets.
+#    bucketId: zia-bi-analytics-log-bucket #
+#
+#    # --- Enable Log Analytics ---
+#
+#    # enableAnalytics: Set to true to enable Log Analytics for this bucket.
+#    enableAnalytics: true
+#
+#    # --- Optional Parameters ---
+#
+#    # description: A description for the bucket.
+#    description: "Stores application logs with Log Analytics capabilities enabled."
+#
+#    # retentionDays: Logs older than this number of days are deleted. Value must be between 1 and 3650.
+#    retentionDays: 90
+#
+#    # locked: Prevents the bucket from being deleted or modified (e.g., retention policy).
+#    # Default is false. Use with caution.
+#    #locked: false
+#
+#  providerConfigRef:
+#    # The name of the ProviderConfig containing GCP credentials.
+#    name: default # Adjust if your ProviderConfig has a different name

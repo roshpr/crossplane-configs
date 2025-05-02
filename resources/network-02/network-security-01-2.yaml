@@ -1,0 +1,81 @@
+# --- Firewall Rule: Allow All Egress ---
+
+apiVersion: compute.gcp.upbound.io/v1beta2 # Firewall API version
+kind: Firewall
+metadata:
+  name: zia-bi-allow-all-egress
+  namespace: zia-crossplane-configs
+  # --- ADDED K8S LABELS ---
+  labels:
+    createdby: crossplane
+    project: zia-build-infra
+    owner: zia-sre
+  # -----------------------
+spec:
+  forProvider:
+    networkRef:
+      name: zia-build-infra-nw
+    direction: EGRESS
+    priority: 1000
+    destinationRanges: ["0.0.0.0/0"]
+    allow:
+      - protocol: all
+    # No 'labels:' block here
+  providerConfigRef:
+    name: default
+
+---
+# --- Firewall Rule: Allow Ingress SSH (Port 22) ---
+
+apiVersion: compute.gcp.upbound.io/v1beta2 # Firewall API version
+kind: Firewall
+metadata:
+  name: zia-bi-allow-ssh-ingress
+  namespace: zia-crossplane-configs
+  # --- ADDED K8S LABELS ---
+  labels:
+    createdby: crossplane
+    project: zia-build-infra
+    owner: zia-sre
+  # -----------------------
+spec:
+  forProvider:
+    networkRef:
+      name: zia-build-infra-nw
+    direction: INGRESS
+    priority: 1000
+    sourceRanges: ["0.0.0.0/0"]
+    allow:
+      - protocol: tcp
+        ports: ["22"]
+    # No 'labels:' block here
+  providerConfigRef:
+    name: default
+
+---
+# --- Firewall Rule: Allow Ingress HTTPS (Port 443) ---
+
+apiVersion: compute.gcp.upbound.io/v1beta2 # Firewall API version
+kind: Firewall
+metadata:
+  name: zia-bi-allow-https-ingress
+  namespace: zia-crossplane-configs
+  # --- ADDED K8S LABELS ---
+  labels:
+    createdby: crossplane
+    project: zia-build-infra
+    owner: zia-sre
+  # -----------------------
+spec:
+  forProvider:
+    networkRef:
+      name: zia-build-infra-nw
+    direction: INGRESS
+    priority: 1000
+    sourceRanges: ["0.0.0.0/0"]
+    allow:
+      - protocol: tcp
+        ports: ["443"]
+    # No 'labels:' block here
+  providerConfigRef:
+    name: default

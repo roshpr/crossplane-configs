@@ -1,0 +1,46 @@
+# --- Node Pool: infra-cache ---
+apiVersion: container.gcp.upbound.io/v1beta2 # Using v1beta2 as required by schema
+kind: NodePool
+metadata:
+  name: infra-cache
+  namespace: zia-crossplane-configs
+  labels: # Kubernetes metadata labels
+    createdby: crossplane
+    project: zia-build-infra
+    owner: zia-sre
+spec:
+  forProvider:
+    clusterRef:
+      name: zia-build-infra-gke
+    location: us-west1
+    initialNodeCount: 1 # Per Zone
+    nodeLocations:
+      - us-west1-a
+      - us-west1-b
+      - us-west1-c
+    nodeConfig: # Correct field name for v1beta2
+      machineType: e2-medium
+      diskSizeGb: 100
+      diskType: pd-standard
+      oauthScopes:
+        - "https://www.googleapis.com/auth/devstorage.read_only"
+        - "https://www.googleapis.com/auth/logging.write"
+        - "https://www.googleapis.com/auth/monitoring"
+        - "https://www.googleapis.com/auth/servicecontrol"
+        - "https://www.googleapis.com/auth/service.management.readonly"
+        - "https://www.googleapis.com/auth/trace.append"
+      shieldedInstanceConfig:
+        enableIntegrityMonitoring: true
+        enableSecureBoot: true
+      # --- ADDED GCP NODE LABELS ---
+      labels: # Labels applied to the actual GCE nodes
+        pool-name: infra-cache # Label indicating the pool name
+      # ----------------------------
+    management:
+      autoRepair: true
+      autoUpgrade: true
+    autoscaling:
+      minNodeCount: 1 # Per Zone
+      maxNodeCount: 10 # Per Zone
+  providerConfigRef:
+    name: default

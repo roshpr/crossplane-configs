@@ -1,0 +1,51 @@
+# Filename: gcp-gke-cluster-v1beta2-node-labels.yaml
+
+# --- GKE Cluster Control Plane ---
+# (Cluster definition remains the same as the previous working version)
+apiVersion: container.gcp.upbound.io/v1beta2 # Using v1beta2 as required by schema
+kind: Cluster
+metadata:
+  name: zia-build-infra-gke
+  namespace: zia-crossplane-configs
+  labels:
+    createdby: crossplane
+    project: zia-build-infra
+    owner: zia-sre
+spec:
+  forProvider:
+    location: us-west1
+    description: "GKE cluster for ZIA build infrastructure"
+    networkRef:
+      name: zia-build-infra-nw
+    subnetworkRef:
+      name: zia-bi-private-subnet-1
+    removeDefaultNodePool: true
+    initialNodeCount: 1
+    ipAllocationPolicy: # This config makes it VPC Native.
+      clusterIpv4CidrBlock: "10.60.0.0/16"
+      servicesIpv4CidrBlock: "10.61.0.0/20"
+    privateClusterConfig:
+      enablePrivateNodes: true
+      enablePrivateEndpoint: false
+      #enablePublicEndpoint: true
+      masterIpv4CidrBlock: "172.16.0.0/28"
+    masterAuthorizedNetworksConfig:
+      #enabled: true # <-- Explicitly enable the feature
+      cidrBlocks:
+#        - displayName: "Allow my home IP"
+#          cidrBlock: "170.85.154.0/24" # <-- REPLACE THIS
+        - displayName: "Allow my home IP 2"
+          cidrBlock: "172.126.69.0/24" # <-- REPLACE THIS
+        - displayName: "Allow VPC Network"
+          cidrBlock: "10.0.0.0/16" # Current VPC
+        - displayName: "Allow Cloud Shell"
+          cidrBlock: "35.235.240.0/20"
+    releaseChannel:
+      channel: REGULAR
+    workloadIdentityConfig:
+      workloadPool: "zia-build-infra.svc.id.goog" # TODO . to be templatized
+    loggingService: "logging.googleapis.com/kubernetes"
+    monitoringService: "monitoring.googleapis.com/kubernetes"
+  providerConfigRef:
+    name: default
+
