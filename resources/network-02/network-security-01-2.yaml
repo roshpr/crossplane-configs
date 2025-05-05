@@ -3,7 +3,7 @@
 apiVersion: compute.gcp.upbound.io/v1beta2 # Firewall API version
 kind: Firewall
 metadata:
-  name: zia-bi-allow-all-egress
+  name: zia-build-infra-allow-all-egress
   namespace: zia-crossplane-configs
   # --- ADDED K8S LABELS ---
   labels:
@@ -30,7 +30,7 @@ spec:
 apiVersion: compute.gcp.upbound.io/v1beta2 # Firewall API version
 kind: Firewall
 metadata:
-  name: zia-bi-allow-ssh-ingress
+  name: zia-build-infra-allow-ssh-ingress
   namespace: zia-crossplane-configs
   # --- ADDED K8S LABELS ---
   labels:
@@ -58,7 +58,7 @@ spec:
 apiVersion: compute.gcp.upbound.io/v1beta2 # Firewall API version
 kind: Firewall
 metadata:
-  name: zia-bi-allow-https-ingress
+  name: zia-build-infra-allow-https-ingress
   namespace: zia-crossplane-configs
   # --- ADDED K8S LABELS ---
   labels:

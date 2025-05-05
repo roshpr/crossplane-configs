@@ -4,7 +4,7 @@
 apiVersion: compute.gcp.upbound.io/v1beta1 # Network API version
 kind: Network
 metadata:
-  name: zia-build-infra-nw
+  name: zia-build-infra-nw-1
   # --- ADDED K8S LABELS ---
   labels:
     createdby: crossplane
@@ -26,7 +26,7 @@ spec:
 apiVersion: compute.gcp.upbound.io/v1beta1 # Subnetwork API version
 kind: Subnetwork
 metadata:
-  name: zia-bi-public-subnet-1
+  name: zia-build-infra-public-subnet-1
   # --- ADDED K8S LABELS ---
   labels:
     createdby: crossplane
@@ -35,10 +35,10 @@ metadata:
   # -----------------------
 spec:
   forProvider:
-    ipCidrRange: 10.0.0.0/24
+    ipCidrRange: 172.16.0.0/16
     region: us-west1
     networkRef:
-      name: zia-build-infra-nw
+      name: zia-build-infra-nw-1
     # No 'labels:' block here
   providerConfigRef:
     name: default
@@ -47,7 +47,7 @@ spec:
 apiVersion: compute.gcp.upbound.io/v1beta1 # Subnetwork API version
 kind: Subnetwork
 metadata:
-  name: zia-bi-public-subnet-2
+  name: zia-build-infra-public-subnet-2
   # --- ADDED K8S LABELS ---
   labels:
     createdby: crossplane
@@ -56,10 +56,10 @@ metadata:
   # -----------------------
 spec:
   forProvider:
-    ipCidrRange: 10.0.1.0/24
+    ipCidrRange: 172.16.1.0/16
     region: us-west1
     networkRef:
-      name: zia-build-infra-nw
+      name: zia-build-infra-nw-1
     # No 'labels:' block here
   providerConfigRef:
     name: default
@@ -68,7 +68,7 @@ spec:
 apiVersion: compute.gcp.upbound.io/v1beta1 # Subnetwork API version
 kind: Subnetwork
 metadata:
-  name: zia-bi-public-subnet-3
+  name: zia-build-infra-public-subnet-3
   # --- ADDED K8S LABELS ---
   labels:
     createdby: crossplane
@@ -77,10 +77,10 @@ metadata:
   # -----------------------
 spec:
   forProvider:
-    ipCidrRange: 10.0.2.0/24
+    ipCidrRange: 172.16.2.0/16
     region: us-west1
     networkRef:
-      name: zia-build-infra-nw
+      name: zia-build-infra-nw-1
     # No 'labels:' block here
   providerConfigRef:
     name: default
@@ -91,7 +91,7 @@ spec:
 apiVersion: compute.gcp.upbound.io/v1beta1 # Subnetwork API version
 kind: Subnetwork
 metadata:
-  name: zia-bi-private-subnet-1
+  name: zia-build-infra-private-subnet-1
   # --- ADDED K8S LABELS ---
   labels:
     createdby: crossplane
@@ -100,10 +100,10 @@ metadata:
   # -----------------------
 spec:
   forProvider:
-    ipCidrRange: 10.0.3.0/24
+    ipCidrRange: 172.16.3.0/16
     region: us-west1
     networkRef:
-      name: zia-build-infra-nw
+      name: zia-build-infra-nw-1
     privateIpGoogleAccess: true
     # No 'labels:' block here
   providerConfigRef:
@@ -113,7 +113,7 @@ spec:
 apiVersion: compute.gcp.upbound.io/v1beta1 # Subnetwork API version
 kind: Subnetwork
 metadata:
-  name: zia-bi-private-subnet-2
+  name: zia-build-infra-private-subnet-2
   # --- ADDED K8S LABELS ---
   labels:
     createdby: crossplane
@@ -122,10 +122,10 @@ metadata:
   # -----------------------
 spec:
   forProvider:
-    ipCidrRange: 10.0.4.0/24
+    ipCidrRange: 172.16.4.0/16
     region: us-west1
     networkRef:
-      name: zia-build-infra-nw
+      name: zia-build-infra-nw-1
     privateIpGoogleAccess: true
     # No 'labels:' block here
   providerConfigRef:
@@ -135,7 +135,7 @@ spec:
 apiVersion: compute.gcp.upbound.io/v1beta1 # Subnetwork API version
 kind: Subnetwork
 metadata:
-  name: zia-bi-private-subnet-3
+  name: zia-build-infra-private-subnet-3
   # --- ADDED K8S LABELS ---
   labels:
     createdby: crossplane
@@ -144,10 +144,10 @@ metadata:
   # -----------------------
 spec:
   forProvider:
-    ipCidrRange: 10.0.5.0/24
+    ipCidrRange: 172.16.5.0/16
     region: us-west1
     networkRef:
-      name: zia-build-infra-nw
+      name: zia-build-infra-nw-1
     privateIpGoogleAccess: true
     # No 'labels:' block here
   providerConfigRef:
@@ -158,7 +158,7 @@ spec:
 apiVersion: compute.gcp.upbound.io/v1beta2 # Keep v1beta2 as needed before
 kind: Router
 metadata:
-  name: zia-bi-nat-router
+  name: zia-build-infra-nat-router
   labels: # Kubernetes metadata labels
     createdby: crossplane
     project: zia-build-infra
@@ -167,7 +167,7 @@ spec:
   forProvider:
     region: us-west1
     networkRef:
-      name: zia-build-infra-nw
+      name: zia-build-infra-nw-1
     bgp:
       asn: 64514 # Keep the ASN
       advertiseMode: DEFAULT # Keep the mode
@@ -182,7 +182,7 @@ spec:
 apiVersion: compute.gcp.upbound.io/v1beta2 # Keep v1beta2 as needed before
 kind: RouterNAT
 metadata:
-  name: zia-bi-nat-gateway
+  name: zia-build-infra-nat-gateway
   labels: # Kubernetes metadata labels
     createdby: crossplane
     project: zia-build-infra
@@ -190,22 +190,22 @@ metadata:
 spec:
   forProvider:
     routerRef:
-      name: zia-bi-nat-router
+      name: zia-build-infra-nat-router
     region: us-west1
     # This specifies the overall mode: we are providing a list of subnets below
     sourceSubnetworkIpRangesToNat: LIST_OF_SUBNETWORKS
     # Now, for each subnet in the list, specify which ranges to NAT
     subnetwork:
       - nameRef:
-          name: zia-bi-private-subnet-1
+          name: zia-build-infra-private-subnet-1
         # Specify which IP ranges from this subnet should be NATed
         sourceIpRangesToNat: ["ALL_IP_RANGES"] # <<< ADDED THIS LINE
       - nameRef:
-          name: zia-bi-private-subnet-2
+          name: zia-build-infra-private-subnet-2
         # Specify which IP ranges from this subnet should be NATed
         sourceIpRangesToNat: ["ALL_IP_RANGES"] # <<< ADDED THIS LINE
       - nameRef:
-          name: zia-bi-private-subnet-3
+          name: zia-build-infra-private-subnet-3
         # Specify which IP ranges from this subnet should be NATed
         sourceIpRangesToNat: ["ALL_IP_RANGES"] # <<< ADDED THIS LINE
     natIpAllocateOption: AUTO_ONLY

@@ -18,17 +18,17 @@ spec:
     networkRef:
       name: zia-build-infra-nw
     subnetworkRef:
-      name: zia-bi-private-subnet-1
+      name: zia-build-infra-private-subnet-1
     removeDefaultNodePool: true
     initialNodeCount: 1
     ipAllocationPolicy: # This config makes it VPC Native.
-      clusterIpv4CidrBlock: "10.60.0.0/16"
-      servicesIpv4CidrBlock: "10.61.0.0/20"
+      clusterIpv4CidrBlock: "10.70.0.0/16"
+      servicesIpv4CidrBlock: "10.71.0.0/20"
     privateClusterConfig:
       enablePrivateNodes: true
       enablePrivateEndpoint: false
       #enablePublicEndpoint: true
-      masterIpv4CidrBlock: "172.16.0.0/28"
+      masterIpv4CidrBlock: "172.16.255.0/24"
     masterAuthorizedNetworksConfig:
       #enabled: true # <-- Explicitly enable the feature
       cidrBlocks:
