@@ -11,7 +11,7 @@ metadata:
 spec:
   forProvider:
     clusterRef:
-      name: zia-build-infra-gke-2
+      name: zia-bi-dev1-gke-1
     location: us-west1
     initialNodeCount: 1 # Per Zone
     nodeLocations:

@@ -3,7 +3,7 @@
 apiVersion: compute.gcp.upbound.io/v1beta2 # Firewall API version
 kind: Firewall
 metadata:
-  name: zia-build-infra-allow-all-egress
+  name: zia-bi-dev1-allow-all-egress
   namespace: zia-crossplane-configs
   # --- ADDED K8S LABELS ---
   labels:
@@ -14,7 +14,7 @@ metadata:
 spec:
   forProvider:
     networkRef:
-      name: zia-build-infra-nw
+      name: zia-bi-dev1-nw-1
     direction: EGRESS
     priority: 1000
     destinationRanges: ["0.0.0.0/0"]
@@ -30,7 +30,7 @@ spec:
 apiVersion: compute.gcp.upbound.io/v1beta2 # Firewall API version
 kind: Firewall
 metadata:
-  name: zia-build-infra-allow-ssh-ingress
+  name: zia-bi-dev1-allow-ssh-ingress
   namespace: zia-crossplane-configs
   # --- ADDED K8S LABELS ---
   labels:
@@ -41,7 +41,7 @@ metadata:
 spec:
   forProvider:
     networkRef:
-      name: zia-build-infra-nw
+      name: zia-bi-dev1-nw-1
     direction: INGRESS
     priority: 1000
     sourceRanges: ["0.0.0.0/0"]
@@ -58,7 +58,7 @@ spec:
 apiVersion: compute.gcp.upbound.io/v1beta2 # Firewall API version
 kind: Firewall
 metadata:
-  name: zia-build-infra-allow-https-ingress
+  name: zia-bi-dev1-allow-https-ingress
   namespace: zia-crossplane-configs
   # --- ADDED K8S LABELS ---
   labels:
@@ -69,7 +69,7 @@ metadata:
 spec:
   forProvider:
     networkRef:
-      name: zia-build-infra-nw
+      name: zia-bi-dev1-nw-1
     direction: INGRESS
     priority: 1000
     sourceRanges: ["0.0.0.0/0"]

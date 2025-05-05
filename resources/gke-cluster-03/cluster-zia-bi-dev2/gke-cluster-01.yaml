@@ -5,7 +5,7 @@
 apiVersion: container.gcp.upbound.io/v1beta2 # Using v1beta2 as required by schema
 kind: Cluster
 metadata:
-  name: zia-build-infra-gke-2
+  name: zia-bi-dev1-gke-1
   namespace: zia-crossplane-configs
   labels:
     createdby: crossplane
@@ -16,9 +16,9 @@ spec:
     location: us-west1
     description: "GKE cluster for ZIA build infrastructure"
     networkRef:
-      name: zia-build-infra-nw-1
+      name: zia-bi-dev1-nw-1
     subnetworkRef:
-      name: zia-build-infra-private-subnet-1
+      name: zia-bi-dev1-private-subnet-1
     removeDefaultNodePool: true
     initialNodeCount: 1
     ipAllocationPolicy: # This config makes it VPC Native.
