@@ -28,7 +28,7 @@ spec:
       enablePrivateNodes: true
       enablePrivateEndpoint: false
       #enablePublicEndpoint: true
-      masterIpv4CidrBlock: "172.16.255.0/24"
+      masterIpv4CidrBlock: "172.16.255.0/28"
     masterAuthorizedNetworksConfig:
       #enabled: true # <-- Explicitly enable the feature
       cidrBlocks:
