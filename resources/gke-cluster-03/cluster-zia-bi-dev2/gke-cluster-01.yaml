@@ -31,11 +31,13 @@ spec:
       masterIpv4CidrBlock: "172.16.255.0/28"
     masterAuthorizedNetworksConfig:
       #enabled: true # <-- Explicitly enable the feature
-      cidrBlocks:
-#        - displayName: "Allow my home IP"
-#          cidrBlock: "170.85.154.0/24" # <-- REPLACE THIS
+      cidrBlocks: 
+        - displayName: "Allow my home IP"
+          cidrBlock: "136.226.78.0/24"       
+        - displayName: "Allow my home IP"
+          cidrBlock: "170.85.154.0/24" 
         - displayName: "Allow my home IP 2"
-          cidrBlock: "172.126.69.0/24" # <-- REPLACE THIS
+          cidrBlock: "172.126.69.0/24" 
         - displayName: "Allow VPC Network"
           cidrBlock: "10.0.0.0/16" # Current VPC
         - displayName: "Allow Cloud Shell"
