@@ -1,0 +1,153 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xgcpinstances.zscaler.com
+spec:
+  # 1) Automatically bind this Composition by default:
+  defaultCompositionRef:
+    name: xgcpinstance-beginner-pipeline
+
+  # 2) Only expose these keys in the Connection Secret:
+  connectionSecretKeys:
+    - ipAddress
+    - sshKey
+
+  group: zscaler.com
+  names:
+    kind: XGCPInstance
+    plural: xgcpinstances
+  claimNames:
+    kind: GCPInstance
+    plural: gcpinstances
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                parameters:
+                  type: object
+                  properties:
+                    gcpProfile:
+                      type: object
+                      properties:
+                        project:
+                          type: string
+                        region:
+                          type: string
+                        mgmtSubnet:
+                          type: string
+                        dnsZoneName:
+                          type: string
+                        dnsZoneDomain:
+                          type: string
+                      required:
+                        - project
+                        - region
+                        - mgmtSubnet
+                        - dnsZoneName
+                        - dnsZoneDomain
+                    instanceConfig:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        machineType:
+                          type: string
+                        zone:
+                          type: string
+                        bootDiskType:
+                          type: string
+                        bootSize:
+                          type: integer
+                        dataSize:
+                          type: integer
+                        image:
+                          type: string
+                        configureNlb:
+                          type: boolean
+                        configurePfRule:
+                          type: boolean
+                        noOfPfRule:
+                          type: integer
+                        serviceType:
+                          type: string
+                        zsCloud:
+                          type: string
+                        interfaces:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              subnetwork:
+                                type: string
+                              ipaddress:
+                                type: string
+                              nicType:
+                                type: string
+                              aliasIps:
+                                type: array
+                                items:
+                                  type: string
+                            required:
+                              - subnetwork
+                        userData:
+                          type: string
+                      required:
+                        - name
+                        - machineType
+                        - zone
+                        - bootDiskType
+                        - bootSize
+                        - dataSize
+                        - image
+                    instanceName:
+                      type: string
+                    sshKeys:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          username:
+                            type: string
+                          sshKey:
+                            type: string
+                        required:
+                          - username
+                          - sshKey
+                    subnetNames:
+                      type: object
+                      properties:
+                        client:
+                          type: string
+                        server:
+                          type: string
+                        cloud:
+                          type: string
+                      required:
+                        - client
+                        - server
+                        - cloud
+                    tags:
+                      type: array
+                      items:
+                        type: string
+                    createDnsRecord:
+                      type: boolean
+                  required:
+                    - gcpProfile
+                    - instanceConfig
+                    - instanceName
+                    - sshKeys
+                    - subnetNames
+                    - tags
+                    - createDnsRecord
+              required:
+                - parameters
+          required:
+            - spec
