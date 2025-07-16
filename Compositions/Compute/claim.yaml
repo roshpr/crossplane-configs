@@ -1,0 +1,47 @@
+apiVersion: zscaler.com/v1alpha1
+kind: GCPInstance
+metadata:
+  name: example-gcp-instance
+  namespace: default
+spec:
+  parameters:
+    gcpProfile:
+      project: temp-463509
+      region: us-central1
+      mgmtSubnet: my-management-subnet
+      dnsZoneName: my-dns-zone
+      dnsZoneDomain: example.com
+    instanceConfig:
+      name: my-vm
+      machineType: e2-medium
+      zone: us-central1-a
+      bootDiskType: pd-ssd
+      bootSize: 20
+      dataSize: 50
+      image: projects/ubuntu-os-cloud/global/images/family/ubuntu-2204-lts
+      configureNlb: false
+      configurePfRule: false
+      noOfPfRule: 0
+      serviceType: NONE
+      zsCloud: global
+      interfaces:
+        - subnetwork: projects/temp-463509/regions/us-central1/subnetworks/prajna-client-subnet
+          nicType: VIRTIO_NET
+          aliasIps:
+            - 10.0.0.6
+      userData: |
+        #!/bin/bash
+        echo "Hello from VM"
+    instanceName: my-vm-fqdn
+    sshKeys:
+      - username: ubuntu
+        sshKey: ubuntu:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCn2GEgOoofkmtoJiIjuc3VC1fMsh59sg+j5e5MEEiE3h8HmcazHkml9Z0f0/jIKjiEHkMBGkWTA1KLbwKt6yX3GmiX2JWprRoTVxjoy/HmqHuYB7s3vwwvUnrZUqXgPzN7ZWyehe3yeGXCC/e2thzAfpcCNaDzAJ5rc/NFi/ZEv56rHyReFfyZIe2Mekm/HkbBgUQuYpzGyhSeiNGHpc3FUITjX9ozNeIy66oaUA6QP4siI0677dqoscQ2q093/ekZ6oLkibhywyzlnRmCa4IwtlOdexIkcZD6xXnEM9PJLAZgj+ahxofS2gbNFDKQ8dxuX3uxPjXi3iHjhgX9sNLjfvKALcZsxXwm3blANvmCRJBA2eRsMgmYf1O2udjbIhlTK1VwK5x2LSYzs4ptKtKHuphJZE9gApZBIQ+k7T4xJ14vB+JwBfhIuf9QjwbqVpG55AV0uEvqTkhE+ro6Q7jeazwkyQu1hxzQ+cs7dnSyPXhpi+agOSWl4n2K0gAKLXFHthox5qWCs8fwlnv27P0byo59KZaCCqzFWrZU3AtHii8XrIuzQ8ndZMW8tMlz6hjImPoOw+maeSA0yPZbB4cn5QZUMfO7N0La+1CkIUs/0HHROJZoV6nDzKJHYTDMoWlAO+16WSpp8NH9Yt2pZITTcwPp/G8ubRWcDU0XeRT7aQ== palprajna2002@gmail.com
+    subnetNames:
+      client: prajna-client-subnet
+      server: prajna-server-subnet
+      cloud: prajna-cloud-subnet
+    tags:
+      - prajna-vm
+    createDnsRecord: true
+  writeConnectionSecretToRef:
+    name: gcp-instance-creds
