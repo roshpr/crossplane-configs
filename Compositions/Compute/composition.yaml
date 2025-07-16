@@ -1,0 +1,72 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: xgcpinstance-beginner-pipeline
+spec:
+  writeConnectionSecretsToNamespace: crossplane-system
+
+  compositeTypeRef:
+    apiVersion: zscaler.com/v1alpha1
+    kind: XGCPInstance
+
+  resources:
+    - name: vm
+      base:
+        apiVersion: compute.gcp.upbound.io/v1beta1
+        kind: Instance
+        spec:
+          providerConfigRef:
+            name: default
+          forProvider:
+            bootDisk:
+              - initializeParams:
+                  - {}
+            networkInterface:
+              - accessConfig:
+                  - {}    # <--- This adds a public IP
+          writeConnectionSecretToRef:
+            name: ""
+            namespace: crossplane-system
+
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.writeConnectionSecretToRef.name
+
+        - fromFieldPath: spec.parameters.instanceConfig.machineType
+          toFieldPath: spec.forProvider.machineType
+
+        - fromFieldPath: spec.parameters.instanceConfig.zone
+          toFieldPath: spec.forProvider.zone
+
+        - fromFieldPath: spec.parameters.instanceConfig.image
+          toFieldPath: spec.forProvider.bootDisk[0].initializeParams[0].image
+
+        - fromFieldPath: spec.parameters.instanceConfig.bootDiskType
+          toFieldPath: spec.forProvider.bootDisk[0].initializeParams[0].type
+
+        - fromFieldPath: spec.parameters.instanceConfig.bootSize
+          toFieldPath: spec.forProvider.bootDisk[0].initializeParams[0].size
+
+        - fromFieldPath: spec.parameters.instanceConfig.interfaces[0].subnetwork
+          toFieldPath: spec.forProvider.networkInterface[0].subnetwork
+
+        - fromFieldPath: spec.parameters.instanceConfig.interfaces[0].nicType
+          toFieldPath: spec.forProvider.networkInterface[0].nicType
+
+        # SSH keys patch (formats as: username:ssh-rsa....)
+        - fromFieldPath: spec.parameters.sshKeys[0].sshKey
+          toFieldPath: spec.forProvider.metadata.ssh-keys
+
+        - fromFieldPath: spec.parameters.instanceConfig.userData
+          toFieldPath: spec.forProvider.metadata.user-data
+
+        - fromFieldPath: spec.parameters.tags
+          toFieldPath: spec.forProvider.tags
+
+      connectionDetails:
+        - fromFieldPath: status.atProvider.networkInterface[0].networkIp
+          name: ipAddress
+        - fromFieldPath: status.atProvider.networkInterface[0].accessConfig[0].natIp
+          name: publicIp
+        - fromConnectionSecretKey: ssh-keys
+          name: sshKey
